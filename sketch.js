@@ -10,6 +10,7 @@ var pared1;
 
 var techo1;
 
+var balasGroup, pinchosGroup;
 var  pisosGroup, techos, paredes, paredesGroup;
 
 var enfriamiento = 0;
@@ -22,8 +23,11 @@ function setup() {
 createCanvas(2000,600);
 //creacion de grupos
 
+
 pisosGroup = new Group();
 paredesGroup = new Group();
+balasGroup = new Group();
+pinchosGroup = new Group();
 
 
 var a = cuartos_arriba(-100,50);
@@ -31,7 +35,19 @@ var b = cuartos_abajo(0,100);
 var c = cuartos_derecha(100,200);
 var d = cuartos_izquierda(-100,200);
 
+var bala1 = balas(100,225,2,2);;
+var bala2 = balas(25,175,10,2);
 
+var pincho1 = pinchos(random(-36,36),345);
+// var pincho2 = pinchos(12,345,0,0);
+// var pincho3 = pinchos(-12,345,0,0);
+// var pincho4 = pinchos(-24,345,0,0);
+// var pincho5 = pinchos(24,345,0,0);
+// var pincho6 = pinchos(36,345,0,0);
+// var pincho7 = pinchos(-36,345,0,0);
+
+// var pincho7 = pinchos(205,345,3,0);
+// var pincho7 = pinchos(155,305,0,3);
 
 
 //creacion del personaje principal
@@ -39,6 +55,8 @@ kaizer = createSprite(50,300,10,10);
 }
 
 function draw() {
+
+  console.log(camera.mouseX, camera.mouseY);
 background("black");
 if(gameState === "PLAY"){
 textSize(20);
@@ -62,6 +80,11 @@ kaizer.velocityX = 0;
 camera.position.x = kaizer.x+800;
 camera.position.y = kaizer.y;
 
+//balas 
+balasGroup.bounceOff(paredesGroup);
+balasGroup.bounceOff(pisosGroup);
+pinchosGroup.bounceOff(pisosGroup);
+pinchosGroup.bounceOff(paredesGroup);
 //gravedad
 
 if(kaizer.isTouching(pisosGroup)){
@@ -154,6 +177,9 @@ if(gameState === "END"){
   drawSprites();
 }
 
+///////////////////////////////////
+/***********FUNCIONES************/
+/////////////////////////////////
 function pisos(x,y){
       var p = createSprite(x,y,110,10);
       pisosGroup.add(p);
@@ -199,10 +225,17 @@ puertas2(i+150,j+100);
 pisos(i+100,j+50);
 }
 
-function balas(x,y){
-
+function balas(x,y,vx,vy){
+var b = createSprite(x,y,10,10);
+b.shapeColor="blue";
+b.setVelocity(vx,vy);
+balasGroup.add(b);
 }
 
 function pinchos(x,y){
+var n = createSprite(x,y,10,10);
+n.shapeColor="red";
+n.rotation=45;
 
+pinchosGroup.add(n);
 }
